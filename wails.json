@@ -1,0 +1,12 @@
+{
+  "name": "text-tool",
+  "outputfilename": "text-tool",
+  "frontend:install": "yarn",
+  "frontend:build": "yarn build",
+  "frontend:dev:watcher": "yarn serve",
+  "frontend:dev:serverUrl": "http://localhost:8080",
+  "author": {
+    "name": "Priate",
+    "email": "ufoquinccy@outlook.com"
+  }
+}

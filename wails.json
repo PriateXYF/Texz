@@ -1,6 +1,7 @@
 {
-  "name": "text-tool",
-  "outputfilename": "text-tool",
+  "name": "Texz",
+  "version" : "1.0.0",
+  "outputfilename": "Texz",
   "frontend:install": "yarn",
   "frontend:build": "yarn build",
   "frontend:dev:watcher": "yarn serve",

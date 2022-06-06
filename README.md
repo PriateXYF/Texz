@@ -1,15 +1,23 @@
-# README
+# Texz
 
-## About
+一个跨平台的轻量级文本处理小工具，基于 Go 语言开发，采用 wails 构建。
 
-This is the official Wails Vue template.
+## 开发
 
-## Live Development
+* Development
 
-To run in live development mode, run `wails dev` in the project directory. In another terminal, go into the `frontend`
-directory and run `npm run dev`. The frontend dev server will run on http://localhost:34115. Connect to this in your
-browser and connect to your application.
+```bash
+wails dev
+```
 
-## Building
+* Build
 
-To build a redistributable, production mode package, use `wails build`.
+```bash
+wails build
+```
+
+## 演示
+
+![](https://i.imgur.com/Iefagkt.png)
+![](https://i.imgur.com/Im4yjEy.png)
+

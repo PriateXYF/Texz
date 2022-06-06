@@ -4,7 +4,6 @@ go 1.17
 
 require (
 	github.com/mingrammer/commonregex v1.0.1
-	github.com/robotn/gohook v0.40.0
 	github.com/wailsapp/wails/v2 v2.0.0-beta.37
 )
 
@@ -26,7 +25,6 @@ require (
 	github.com/tkrajina/go-reflector v0.5.5 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
-	github.com/vcaesar/keycode v0.10.0 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
 	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f // indirect

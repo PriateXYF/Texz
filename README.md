@@ -3,8 +3,7 @@
     <img width="284" src="./build/appicon.png">
   </p>
   <h1><strong>Texz</strong></h1>
-  <hr/>
-  <p>一个跨平台的轻量级文本处理小工具，基于 Go 语言。</p>
+  <p>一个跨平台的轻量级文本处理小工具，基于 Go 语言开发。</p>
 </div>
 
 

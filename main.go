@@ -40,6 +40,7 @@ func main() {
 	WindowMenu.AddSeparator()
 	WindowMenu.AddText("Reload", keys.CmdOrCtrl("r"), func(_ *menu.CallbackData) {
 		runtime.WindowReload(app.ctx)
+		runtime.WindowReloadApp(app.ctx)
 	})
 	go shortcuts(func() {
 		runtime.WindowShow(app.ctx)

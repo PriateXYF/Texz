@@ -9,19 +9,41 @@
       type="textarea"
       placeholder="请输入处理字符"
     />
-    <van-field v-model="showTip" input-align="center" :disabled="true" />
+    <p class="show-tip" v-show="now === 0">首次处理</p>
+    <p class="show-tip" v-show="now != 0">
+      {{ history.length > 0 ? history[now - 1].func : "" }}
+      的{{ now % 2 == 0 ? "输出" : "输入" }}
+      {{ now + "/" + history.length }}
+    </p>
     <van-row>
       <van-col class="history-btn-col" span="12">
-        <button class="history-btn">上一版本</button
-      ></van-col>
+        <button v-show="now > 1" class="history-btn" @click="backVersion">
+          上一版本
+        </button>
+        <button disabled v-show="now <= 1" class="history-btn">
+          暂无数据
+        </button></van-col
+      >
       <van-col class="history-btn-col" span="12">
-        <button class="history-btn small">下一版本</button
-      ></van-col>
+        <button
+          v-show="now < history.length"
+          class="history-btn"
+          @click="nextVersion"
+        >
+          下一版本
+        </button>
+        <button disabled v-show="now >= history.length" class="history-btn">
+          暂无数据
+        </button>
+      </van-col>
     </van-row>
   </div>
 </template>
 
 <style lang="less">
+.show-tip {
+  text-align: center;
+}
 .van {
   &-cell {
     background-color: transparent;
@@ -48,7 +70,7 @@ export default {
     return {
       message: "",
       history: [],
-      showTip: `已进行了${history.length}次文本处理`,
+      now: 0,
     };
   },
   methods: {
@@ -59,6 +81,12 @@ export default {
     },
     focus() {
       this.$refs.input.focus();
+    },
+    backVersion() {
+      this.message = this.history[--this.now - 1].text;
+    },
+    nextVersion() {
+      this.message = this.history[++this.now - 1].text;
     },
   },
 };

@@ -1,4 +1,4 @@
-module text-tool
+module texz
 
 go 1.17
 

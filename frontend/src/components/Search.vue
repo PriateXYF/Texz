@@ -76,12 +76,14 @@ export default {
     closeSearch() {
       this.show = false;
       this.value = "";
+      this.functions = [];
       this.$emit("focusTextInput");
     },
     // 选择一个处理方法
     selectFunction(item) {
-      this.$emit("handling", item)
-      this.closeSearch()
+      this.functions = [];
+      this.$emit("handling", item);
+      this.closeSearch();
     },
   },
 };

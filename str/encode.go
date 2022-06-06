@@ -1,9 +1,11 @@
 package str
 
 import (
+	"crypto/md5"
 	"encoding/base64"
+	"fmt"
 	"net/url"
-	"regexp"
+	"strconv"
 )
 
 var Encode = Module{
@@ -13,6 +15,7 @@ var Encode = Module{
 		EncodeURL,
 		EncodeMD5,
 		EncodeBase64,
+		EncodeUnicode,
 	},
 }
 var EncodeURL = Function{
@@ -27,8 +30,9 @@ var EncodeMD5 = Function{
 	Name: "MD5 Crypto",
 	Note: "对字符进行MD5加密",
 	Body: func(rawText string) string {
-		re := regexp.MustCompile("[\u4e00-\u9fa5]")
-		resText := string(re.ReplaceAll([]byte(rawText), []byte("")))
+		data := []byte(rawText)
+		has := md5.Sum(data)
+		resText := fmt.Sprintf("%x", has)
 		return resText
 	},
 }
@@ -38,5 +42,14 @@ var EncodeBase64 = Function{
 	Body: func(rawText string) string {
 		resText := base64.StdEncoding.EncodeToString([]byte(rawText))
 		return resText
+	},
+}
+var EncodeUnicode = Function{
+	Name: "Unicode Encode",
+	Note: "对字符进行Unicode编码",
+	Body: func(rawText string) string {
+		textQuoted := strconv.QuoteToASCII(rawText)
+		textUnquoted := textQuoted[1 : len(textQuoted)-1]
+		return textUnquoted
 	},
 }

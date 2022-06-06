@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"text-tool/str"
+	"texz/str"
 )
 
 // App struct

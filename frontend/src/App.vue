@@ -47,7 +47,16 @@ export default {
         loadingType: "spinner",
       });
       Handling(funcName, rawText).then((result) => {
+        _this.$refs.textInput.history.push({
+          func : funcName,
+          text : rawText
+        })
+        _this.$refs.textInput.history.push({
+          func : funcName,
+          text : result
+        })
         _this.$refs.textInput.message = result
+        _this.$refs.textInput.now = _this.$refs.textInput.history.length
         Toast.clear();
       });
     },

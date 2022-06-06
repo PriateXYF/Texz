@@ -1,6 +1,25 @@
-# Texz
+<div align="center">
+  <p>
+    <img width="284" src="./build/appicon.png">
+  </p>
+  <h1><strong>Texz</strong></h1>
+  <hr/>
+  <p>一个跨平台的轻量级文本处理小工具，基于 Go 语言。</p>
+</div>
 
-一个跨平台的轻量级文本处理小工具，基于 Go 语言开发，采用 wails 构建。
+
+
+<div align="center">
+
+![license](https://img.shields.io/github/license/priatexyf/texz?style=for-the-badge)
+![version](https://img.shields.io/github/package-json/v/priatexyf/texz?filename=frontend%2Fpackage.json&style=for-the-badge)
+![last](https://img.shields.io/github/last-commit/priatexyf/texz?style=for-the-badge)
+![downloads](https://img.shields.io/github/downloads/priatexyf/texz/total?style=for-the-badge)
+</div>
+
+
+
+
 
 ## 开发
 

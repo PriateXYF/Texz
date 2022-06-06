@@ -8,7 +8,7 @@ import (
 
 var Extract = Module{
 	Name: "Extract",
-	Note: "提取指定字符",
+	Note: "提取指定字符串",
 	Functions: []Function{
 		ExtractChinese,
 		ExtractLink,

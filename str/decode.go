@@ -10,7 +10,7 @@ import (
 
 var Decode = Module{
 	Name: "Decode",
-	Note: "解码指定字符",
+	Note: "解码指定字符串",
 	Functions: []Function{
 		DecodeURL,
 		DecodeBase64,
@@ -20,7 +20,7 @@ var Decode = Module{
 
 var DecodeURL = Function{
 	Name: "URL Decode",
-	Note: "对字符进行URL解码",
+	Note: "对字符串进行URL解码",
 	Body: func(rawText string) string {
 		enEscapeUrl, _ := url.QueryUnescape(rawText)
 		return enEscapeUrl
@@ -29,7 +29,7 @@ var DecodeURL = Function{
 
 var DecodeBase64 = Function{
 	Name: "Base64 Decode",
-	Note: "对字符进行Base64解码",
+	Note: "对字符串进行Base64解码",
 	Body: func(rawText string) string {
 		resText, err := base64.StdEncoding.DecodeString(rawText)
 		if err != nil {
@@ -41,7 +41,7 @@ var DecodeBase64 = Function{
 
 var DecodeUnicode = Function{
 	Name: "Unicode Decode",
-	Note: "对Unicode字符进行解码",
+	Note: "对Unicode字符串进行解码",
 	Body: func(rawText string) string {
 		sUnicodev := strings.Split(rawText, "\\u")
 		var resText string

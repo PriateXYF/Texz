@@ -10,7 +10,7 @@ import (
 
 var Encode = Module{
 	Name: "Encode",
-	Note: "编码指定字符",
+	Note: "编码指定字符串",
 	Functions: []Function{
 		EncodeURL,
 		EncodeMD5,
@@ -20,7 +20,7 @@ var Encode = Module{
 }
 var EncodeURL = Function{
 	Name: "URL Encode",
-	Note: "对字符进行URL编码",
+	Note: "对字符串进行URL编码",
 	Body: func(rawText string) string {
 		resText := url.QueryEscape(rawText)
 		return resText
@@ -28,7 +28,7 @@ var EncodeURL = Function{
 }
 var EncodeMD5 = Function{
 	Name: "MD5 Crypto",
-	Note: "对字符进行MD5加密",
+	Note: "对字符串进行MD5加密",
 	Body: func(rawText string) string {
 		data := []byte(rawText)
 		has := md5.Sum(data)
@@ -38,7 +38,7 @@ var EncodeMD5 = Function{
 }
 var EncodeBase64 = Function{
 	Name: "Base64 Encode",
-	Note: "对字符Base64编码",
+	Note: "对字符串进行Base64编码",
 	Body: func(rawText string) string {
 		resText := base64.StdEncoding.EncodeToString([]byte(rawText))
 		return resText
@@ -46,7 +46,7 @@ var EncodeBase64 = Function{
 }
 var EncodeUnicode = Function{
 	Name: "Unicode Encode",
-	Note: "对字符进行Unicode编码",
+	Note: "对字符串进行Unicode编码",
 	Body: func(rawText string) string {
 		textQuoted := strconv.QuoteToASCII(rawText)
 		textUnquoted := textQuoted[1 : len(textQuoted)-1]

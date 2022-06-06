@@ -6,7 +6,7 @@ import (
 
 var Remove = Module{
 	Name: "Remove",
-	Note: "清除指定字符",
+	Note: "清除指定字符串",
 	Functions: []Function{
 		RemoveChinese,
 	},

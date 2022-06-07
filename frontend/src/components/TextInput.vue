@@ -8,8 +8,10 @@
       @dragenter="dragenter"
       @dragleave="dragleave"
       @drop="drop"
+      :maxlength="2**19"
+      show-word-limit
       v-model="message"
-      rows="5"
+      rows="6"
       type="textarea"
       :placeholder="placeholder"
     />
@@ -54,6 +56,12 @@
   &-field__control {
     color: #ffffff !important;
   }
+  &-field__word-num{
+    color: #ffffff !important;
+  }
+  &-field__word-limit{
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
 }
 .history-btn {
   width: 80%;
@@ -65,19 +73,19 @@
 
 .text-input textarea::-webkit-input-placeholder {
   text-align: center;
-  line-height: 100px;
+  line-height: 140px;
 }
 .text-input textarea:-moz-placeholder {
   text-align: center;
-  line-height: 100px;
+  line-height: 140px;
 }
 .text-input textarea::-moz-placeholder {
   text-align: center;
-  line-height: 100px;
+  line-height: 140px;
 }
 .text-input textarea:-ms-input-placeholder {
   text-align: center;
-  line-height: 100px;
+  line-height: 140px;
 }
 </style>
 
@@ -141,8 +149,9 @@ export default {
         forbidClick: true,
       });
       reader.onload = function () {
-        _this.message = reader.result;
         Toast.clear();
+        if(reader.result.length > 2**19) return Toast.fail("字数过多");
+        _this.message = reader.result;
       };
       reader.onerror = function () {
         Toast.clear();

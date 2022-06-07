@@ -62,8 +62,8 @@ func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:         "Texz",
-		Width:         432,
-		Height:        312,
+		Width:         512,
+		Height:        356,
 		MaxHeight:     768,
 		DisableResize: true,
 		// AlwaysOnTop:       true,

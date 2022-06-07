@@ -17,7 +17,8 @@
   cursor: pointer;
   font-size: 1.4rem;
   float: right;
-  margin-top: 6px;
+  margin-top: 10px;
+  margin-bottom: 2px;
   margin-right: 10px;
 }
 </style>

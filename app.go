@@ -5,6 +5,7 @@ import (
 	"texz/str"
 
 	"github.com/atotto/clipboard"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -34,4 +35,9 @@ func (a *App) Handling(funcName string, rawText string) string {
 func (a *App) Copy(text string) error {
 	res := clipboard.WriteAll(text)
 	return res
+}
+
+func (a *App) Reload() {
+	runtime.WindowReload(a.ctx)
+	runtime.WindowReloadApp(a.ctx)
 }

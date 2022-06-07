@@ -39,8 +39,7 @@ func main() {
 		runtime.WindowMinimise(app.ctx)
 	})
 	WindowMenu.AddText("重载", keys.CmdOrCtrl("r"), func(_ *menu.CallbackData) {
-		runtime.WindowReload(app.ctx)
-		runtime.WindowReloadApp(app.ctx)
+		app.Reload()
 	})
 	addEmptyMenu(WindowMenu, "配置", keys.CmdOrCtrl(","))
 	WindowMenu.AddSeparator()

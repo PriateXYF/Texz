@@ -13,3 +13,7 @@ export function GetModules() {
 export function Handling(arg1, arg2) {
   return window['go']['main']['App']['Handling'](arg1, arg2);
 }
+
+export function Reload() {
+  window['go']['main']['App']['Reload']();
+}

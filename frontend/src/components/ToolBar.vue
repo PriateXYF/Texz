@@ -3,7 +3,7 @@
     <van-col span="12"></van-col>
     <van-col span="12">
       <van-icon name="setting" class="tool-bar-icon" />
-      <van-icon name="replay" class="tool-bar-icon" />
+      <van-icon name="replay" class="tool-bar-icon" @click="reload"/>
       <van-icon name="revoke" class="tool-bar-icon" @click="undoTextInput"/>
       <van-icon name="delete" class="tool-bar-icon" @click="emptyTextInput" />
       <van-icon name="description" class="tool-bar-icon" @click="copyTextInput"/>
@@ -23,6 +23,7 @@
 </style>
 
 <script>
+import { Reload } from "../../wailsjs/go/main/App";
 export default {
   methods: {
     emptyTextInput() {
@@ -36,6 +37,9 @@ export default {
     },
     undoTextInput(){
       this.$emit("undoTextInput");
+    },
+    reload(){
+      Reload()
     }
   },
   mounted() {

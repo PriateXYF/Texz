@@ -7,3 +7,5 @@ export function Copy(arg1:string):Promise<Error>;
 export function GetModules():Promise<Array<str.Module>>;
 
 export function Handling(arg1:string,arg2:string):Promise<string>;
+
+export function Reload():void;

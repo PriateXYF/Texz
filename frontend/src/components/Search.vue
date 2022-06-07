@@ -17,6 +17,7 @@
         :title="item.name"
         :value="item.note"
         @click="selectFunction(item)"
+        @mouseenter.native="activated = index"
       />
     </van-cell-group>
   </van-popup>
@@ -55,6 +56,7 @@ export default {
       value: "",
       functions: [],
       activated: -1,
+      console: console
     };
   },
   methods: {

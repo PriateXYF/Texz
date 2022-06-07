@@ -1,15 +1,21 @@
 <template>
   <div data-wails-no-drag @click="focus">
     <van-field
+    class="text-input"
       ref="input"
       :autofocus="true"
       @blur="focus()"
+      @dragenter="dragenter"
+      @dragleave="dragleave"
+      @drop="drop"
       v-model="message"
       rows="5"
       type="textarea"
-      placeholder="请输入处理字符"
+      :placeholder="placeholder"
     />
-    <p class="show-tip select-disabled" v-show="now === 0">输入字符串后按 CMD/Ctrl + Enter 选择处理方法</p>
+    <p class="show-tip select-disabled" v-show="now === 0">
+      输入字符串后按 CMD/Ctrl + Enter 选择处理方法
+    </p>
     <p class="show-tip select-disabled" v-show="now != 0">
       {{ history.length > 0 ? history[now - 1].func : "" }}
       的{{ now % 2 == 0 ? "输出" : "输入" }}
@@ -56,6 +62,23 @@
 .history-btn-col {
   text-align: center;
 }
+
+.text-input textarea::-webkit-input-placeholder {
+  text-align: center;
+  line-height: 100px;
+}
+.text-input textarea:-moz-placeholder {
+  text-align: center;
+  line-height: 100px;
+}
+.text-input textarea::-moz-placeholder {
+  text-align: center;
+  line-height: 100px;
+}
+.text-input textarea:-ms-input-placeholder {
+  text-align: center;
+  line-height: 100px;
+}
 </style>
 
 <script>
@@ -68,29 +91,63 @@ export default {
       message: "",
       history: [],
       now: 0,
+      placeholder: "输入文字或拖入文本文件",
     };
   },
   methods: {
     focus() {
-      if(this.isFocus) this.$refs.input.focus();
+      if (this.isFocus) this.$refs.input.focus();
     },
-    empty(){
-      this.message = ""
+    empty() {
+      this.message = "";
     },
-    copy(){
-      Copy(this.message).then((err)=>{
-        if(!err) Toast.success("复制成功")
-        else Toast.fail("复制失败")
-      })
+    copy() {
+      Copy(this.message).then((err) => {
+        if (!err) Toast.success("复制成功");
+        else Toast.fail("复制失败");
+      });
     },
-    undo(){
-      if(this.now > 0) this.message = this.history[this.now - 1].text;
+    undo() {
+      if (this.now > 0) this.message = this.history[this.now - 1].text;
     },
     backVersion() {
-      if(this.now > 1) this.message = this.history[--this.now - 1].text;
+      if (this.now > 1) this.message = this.history[--this.now - 1].text;
     },
     nextVersion() {
-      if(this.now < this.history.length) this.message = this.history[++this.now - 1].text;
+      if (this.now < this.history.length)
+        this.message = this.history[++this.now - 1].text;
+    },
+    dragenter() {
+      this.empty();
+      this.placeholder = "松开鼠标导入文件";
+    },
+    dragleave() {
+      this.undo();
+      this.placeholder = "输入文字或拖入文本文件";
+    },
+    drop(e) {
+      e.preventDefault();
+      const _this = this;
+      this.placeholder = "输入文字或拖入文本文件";
+      if (e.dataTransfer.files.length != 1)
+        return Toast.fail("只能拖入一个文件");
+      var file = e.dataTransfer.files[0];
+      if (file.type.indexOf("text")) return Toast.fail("只能拖入文本文件");
+      var reader = new FileReader();
+      reader.readAsText(file);
+      Toast.loading({
+        message: "正在读取文件",
+        duration: 0,
+        forbidClick: true,
+      });
+      reader.onload = function () {
+        _this.message = reader.result;
+        Toast.clear();
+      };
+      reader.onerror = function () {
+        Toast.clear();
+        Toast.fail("解析文件失败");
+      };
     },
   },
   mounted() {

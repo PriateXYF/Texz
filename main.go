@@ -23,6 +23,9 @@ var assets embed.FS
 // 	s := hook.Start()
 // 	hook.Process(s)
 // }
+func addEmptyMenu(m *menu.Menu, t string, k *keys.Accelerator) {
+	m.AddText(t, k, func(_ *menu.CallbackData) {})
+}
 
 func main() {
 	// low()
@@ -32,21 +35,26 @@ func main() {
 	// 此处还需要针对MACOS进行判断
 	AppMenu.Append(menu.EditMenu())
 	WindowMenu := AppMenu.AddSubmenu("窗口")
-	WindowMenu.AddText("退出", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
-		runtime.Quit(app.ctx)
-	})
-	WindowMenu.AddSeparator()
 	WindowMenu.AddText("最小化", keys.CmdOrCtrl("w"), func(_ *menu.CallbackData) {
 		runtime.WindowMinimise(app.ctx)
 	})
-	WindowMenu.AddSeparator()
 	WindowMenu.AddText("重载", keys.CmdOrCtrl("r"), func(_ *menu.CallbackData) {
 		runtime.WindowReload(app.ctx)
 		runtime.WindowReloadApp(app.ctx)
 	})
-	EditorMenu := AppMenu.AddSubmenu("编辑")
-	EditorMenu.AddText("搜索文本处理器", keys.CmdOrCtrl("enter"), func(_ *menu.CallbackData) {
+	addEmptyMenu(WindowMenu, "配置", keys.CmdOrCtrl(","))
+	WindowMenu.AddSeparator()
+	WindowMenu.AddText("退出", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
+		runtime.Quit(app.ctx)
 	})
+
+	EditorMenu := AppMenu.AddSubmenu("编辑")
+	addEmptyMenu(EditorMenu, "搜索文本处理器", keys.CmdOrCtrl("enter"))
+	addEmptyMenu(EditorMenu, "搜索文本处理器", keys.CmdOrCtrl("f"))
+	addEmptyMenu(EditorMenu, "清空文本框", keys.CmdOrCtrl("d"))
+	addEmptyMenu(EditorMenu, "复制文本框内容", keys.OptionOrAlt("c"))
+	addEmptyMenu(EditorMenu, "上一版本", keys.CmdOrCtrl("1"))
+	addEmptyMenu(EditorMenu, "下一版本", keys.CmdOrCtrl("2"))
 	// go shortcuts(func() {
 	// 	runtime.WindowShow(app.ctx)
 	// })

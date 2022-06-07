@@ -11,7 +11,8 @@
     />
     <van-cell-group>
       <van-cell
-        v-for="item in functions"
+        v-for="(item, index) in functions"
+        :class="index == activated ? 'active-function' : ''"
         :key="item.name"
         :title="item.name"
         :value="item.note"
@@ -21,6 +22,9 @@
   </van-popup>
 </template>
 <style>
+.active-function {
+  background: rgba(255, 255, 255, 0.2);
+}
 .van-cell {
   cursor: pointer;
 }
@@ -50,10 +54,12 @@ export default {
       show: false,
       value: "",
       functions: [],
+      activated: -1,
     };
   },
   methods: {
     search(str) {
+      this.activated = -1;
       const _this = this;
       this.functions = [];
       const key = str.toLowerCase();
@@ -74,6 +80,7 @@ export default {
       }, 100);
     },
     closeSearch() {
+      this.activated = -1;
       this.show = false;
       this.value = "";
       this.functions = [];
@@ -85,6 +92,30 @@ export default {
       this.$emit("handling", item);
       this.closeSearch();
     },
+    // 切换活跃功能
+    switchActiveFunction() {
+      this.activated =
+        this.activated > this.functions.length - 2 ? 0 : this.activated + 1;
+    },
+  },
+  mounted() {
+    var _this = this;
+    document.addEventListener("keydown", function (e) {
+      if (_this.show && e.code.toLowerCase() === "tab") {
+        e.preventDefault();
+        _this.$refs.search.querySelector("input").focus();
+        _this.switchActiveFunction();
+      }
+      if (
+        _this.show &&
+        e.code.toLowerCase() === "enter" &&
+        _this.activated >= 0
+      ) {
+        e.preventDefault()
+        _this.selectFunction(_this.functions[_this.activated]);
+        _this.activated = -1;
+      }
+    });
   },
 };
 </script>

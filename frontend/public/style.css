@@ -19,10 +19,13 @@
 * {
     color: #fff;
     background-color: transparent;
-    /* user-select: none;
+}
+
+.select-disabled{
+    user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
-    -webkit-user-select: none; */
+    -webkit-user-select: none;
 }
 
 body {

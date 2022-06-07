@@ -1,12 +1,18 @@
 <template>
   <div>
     <Search
+      class="select-disabled"
       :modules="modules"
       ref="search"
       @handling="handling"
       @focusTextInput="focusTextInput"
     />
-    <ToolBar />
+    <ToolBar
+      class="select-disabled"
+      @emptyTextInput="emptyTextInput"
+      @openSearch="openSearch"
+      @copyTextInput="copyTextInput"
+    />
     <TextInput ref="textInput" @openSearch="openSearch" />
   </div>
 </template>
@@ -31,14 +37,17 @@ export default {
   },
   methods: {
     openSearch() {
+      this.$refs.textInput.isFocus = false;
       this.$refs.search.openSearch();
     },
     focusTextInput() {
+      this.$refs.textInput.isFocus = true;
       this.$refs.textInput.focus();
     },
     handling(func) {
-      const _this = this
+      const _this = this;
       const rawText = this.$refs.textInput.message;
+      if (!rawText) return Toast.fail("文本为空");
       const funcName = func.name;
       Toast.loading({
         message: "正在处理文本...",
@@ -48,17 +57,27 @@ export default {
       });
       Handling(funcName, rawText).then((result) => {
         _this.$refs.textInput.history.push({
-          func : funcName,
-          text : rawText
-        })
+          func: funcName,
+          text: rawText,
+        });
         _this.$refs.textInput.history.push({
-          func : funcName,
-          text : result
-        })
-        _this.$refs.textInput.message = result
-        _this.$refs.textInput.now = _this.$refs.textInput.history.length
+          func: funcName,
+          text: result,
+        });
+        _this.$refs.textInput.message = result;
+        _this.$refs.textInput.now = _this.$refs.textInput.history.length;
         Toast.clear();
       });
+    },
+    // 清空文本框
+    emptyTextInput() {
+      if (this.$refs.textInput.isFocus) this.$refs.textInput.empty();
+    },
+    copyTextInput() {
+      if (this.$refs.textInput.isFocus) {
+        this.$refs.textInput.copy();
+        Toast.success("复制成功");
+      }
     },
   },
   beforeCreate() {
@@ -71,6 +90,17 @@ export default {
     GetModules().then((result) => {
       this.modules = result;
       Toast.clear();
+    });
+  },
+  mounted() {
+    var _this = this;
+    document.addEventListener("keydown", function (e) {
+      if (
+        e.metaKey &&
+        (e.code.toLowerCase() === "enter" || e.key.toLowerCase() === "f")
+      ) {
+        _this.openSearch();
+      }
     });
   },
 };

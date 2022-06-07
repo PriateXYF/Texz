@@ -1,39 +1,33 @@
 <template>
-  <div data-wails-no-drag>
+  <div data-wails-no-drag @click="focus">
     <van-field
       ref="input"
-      v-on:keydown.enter="openSearch"
       :autofocus="true"
+      @blur="focus()"
       v-model="message"
       rows="5"
       type="textarea"
       placeholder="请输入处理字符"
     />
-    <p class="show-tip" v-show="now === 0">首次处理</p>
-    <p class="show-tip" v-show="now != 0">
+    <p class="show-tip select-disabled" v-show="now === 0">输入字符串后按 CMD/Ctrl + Enter 选择处理方法</p>
+    <p class="show-tip select-disabled" v-show="now != 0">
       {{ history.length > 0 ? history[now - 1].func : "" }}
       的{{ now % 2 == 0 ? "输出" : "输入" }}
       {{ now + "/" + history.length }}
     </p>
-    <van-row>
+    <van-row class="select-disabled">
       <van-col class="history-btn-col" span="12">
-        <button v-show="now > 1" class="history-btn" @click="backVersion">
+        <button :disabled="now <= 1" class="history-btn" @click="backVersion">
           上一版本
         </button>
-        <button disabled v-show="now <= 1" class="history-btn">
-          暂无数据
-        </button></van-col
-      >
+      </van-col>
       <van-col class="history-btn-col" span="12">
         <button
-          v-show="now < history.length"
+          :disabled="now >= history.length"
           class="history-btn"
           @click="nextVersion"
         >
           下一版本
-        </button>
-        <button disabled v-show="now >= history.length" class="history-btn">
-          暂无数据
         </button>
       </van-col>
     </van-row>
@@ -68,19 +62,21 @@
 export default {
   data() {
     return {
+      isFocus: true,
       message: "",
       history: [],
       now: 0,
     };
   },
   methods: {
-    openSearch(e) {
-      if (e.metaKey || e.altKey) {
-        this.$emit("openSearch");
-      }
-    },
     focus() {
-      this.$refs.input.focus();
+      if(this.isFocus) this.$refs.input.focus();
+    },
+    empty(){
+      this.message = ""
+    },
+    copy(){
+      navigator.clipboard.writeText(this.message);
     },
     backVersion() {
       this.message = this.history[--this.now - 1].text;

@@ -78,6 +78,9 @@ export default {
     copy(){
       navigator.clipboard.writeText(this.message);
     },
+    undo(){
+      if(this.now > 0) this.message = this.history[this.now - 1].text;
+    },
     backVersion() {
       this.message = this.history[--this.now - 1].text;
     },

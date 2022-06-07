@@ -4,6 +4,7 @@
     <van-col span="12">
       <van-icon name="setting" class="tool-bar-icon" />
       <van-icon name="replay" class="tool-bar-icon" />
+      <van-icon name="revoke" class="tool-bar-icon" @click="undoTextInput"/>
       <van-icon name="delete" class="tool-bar-icon" @click="emptyTextInput" />
       <van-icon name="description" class="tool-bar-icon" @click="copyTextInput"/>
       <van-icon name="search" class="tool-bar-icon" @click="openSearch"/>
@@ -32,6 +33,9 @@ export default {
     },
     copyTextInput(){
       this.$emit("copyTextInput");
+    },
+    undoTextInput(){
+      this.$emit("undoTextInput");
     }
   },
   mounted() {
@@ -39,6 +43,9 @@ export default {
     document.addEventListener("keydown", function (e) {
       if (e.metaKey && e.key.toLowerCase() === "d") {
         _this.emptyTextInput();
+      }
+      if (e.metaKey && e.key.toLowerCase() === "z") {
+        _this.undoTextInput();
       }
       if (e.altKey && e.code.toLowerCase() === "keyc") {
         e.preventDefault()

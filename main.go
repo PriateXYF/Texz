@@ -52,6 +52,7 @@ func main() {
 	addEmptyMenu(EditorMenu, "搜索文本处理器", keys.CmdOrCtrl("enter"))
 	addEmptyMenu(EditorMenu, "搜索文本处理器", keys.CmdOrCtrl("f"))
 	addEmptyMenu(EditorMenu, "清空文本框", keys.CmdOrCtrl("d"))
+	addEmptyMenu(EditorMenu, "还原文本框", keys.CmdOrCtrl("z"))
 	addEmptyMenu(EditorMenu, "复制文本框内容", keys.OptionOrAlt("c"))
 	addEmptyMenu(EditorMenu, "上一版本", keys.CmdOrCtrl("1"))
 	addEmptyMenu(EditorMenu, "下一版本", keys.CmdOrCtrl("2"))

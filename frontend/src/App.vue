@@ -12,6 +12,7 @@
       @emptyTextInput="emptyTextInput"
       @openSearch="openSearch"
       @copyTextInput="copyTextInput"
+      @undoTextInput="undoTextInput"
     />
     <TextInput ref="textInput" @openSearch="openSearch" />
   </div>
@@ -79,6 +80,9 @@ export default {
         Toast.success("复制成功");
       }
     },
+    undoTextInput(){
+      if (this.$refs.textInput.isFocus) this.$refs.textInput.undo();
+    }
   },
   beforeCreate() {
     Toast.loading({

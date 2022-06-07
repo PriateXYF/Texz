@@ -82,11 +82,22 @@ export default {
       if(this.now > 0) this.message = this.history[this.now - 1].text;
     },
     backVersion() {
-      this.message = this.history[--this.now - 1].text;
+      if(this.now > 1) this.message = this.history[--this.now - 1].text;
     },
     nextVersion() {
-      this.message = this.history[++this.now - 1].text;
+      if(this.now < this.history.length) this.message = this.history[++this.now - 1].text;
     },
+  },
+  mounted() {
+    var _this = this;
+    document.addEventListener("keydown", function (e) {
+      if (e.metaKey && e.key.toLowerCase() === "1") {
+        _this.backVersion();
+      }
+      if (e.metaKey && e.key.toLowerCase() === "2") {
+        _this.nextVersion();
+      }
+    });
   },
 };
 </script>

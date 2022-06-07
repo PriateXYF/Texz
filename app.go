@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"texz/str"
+
+	"github.com/atotto/clipboard"
 )
 
 // App struct
@@ -28,4 +30,8 @@ func (a *App) GetModules() []str.Module {
 func (a *App) Handling(funcName string, rawText string) string {
 	f := str.GetFunction(funcName)
 	return f.Call(rawText)
+}
+func (a *App) Copy(text string) error {
+	res := clipboard.WriteAll(text)
+	return res
 }

@@ -3,6 +3,7 @@ module texz
 go 1.17
 
 require (
+	github.com/atotto/clipboard v0.1.4
 	github.com/mingrammer/commonregex v1.0.1
 	github.com/wailsapp/wails/v2 v2.0.0-beta.37
 )

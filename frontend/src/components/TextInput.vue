@@ -59,6 +59,8 @@
 </style>
 
 <script>
+import { Toast } from "vant";
+import { Copy } from "../../wailsjs/go/main/App";
 export default {
   data() {
     return {
@@ -76,7 +78,10 @@ export default {
       this.message = ""
     },
     copy(){
-      navigator.clipboard.writeText(this.message);
+      Copy(this.message).then((err)=>{
+        if(!err) Toast.success("复制成功")
+        else Toast.fail("复制失败")
+      })
     },
     undo(){
       if(this.now > 0) this.message = this.history[this.now - 1].text;

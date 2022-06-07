@@ -77,7 +77,6 @@ export default {
     copyTextInput() {
       if (this.$refs.textInput.isFocus) {
         this.$refs.textInput.copy();
-        Toast.success("复制成功");
       }
     },
     undoTextInput(){

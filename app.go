@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"texz/config"
 	"texz/str"
 
 	"github.com/atotto/clipboard"
@@ -40,4 +41,8 @@ func (a *App) Copy(text string) error {
 func (a *App) Reload() {
 	runtime.WindowReload(a.ctx)
 	runtime.WindowReloadApp(a.ctx)
+}
+
+func (a *App) GetConfig() string {
+	return config.GetConfig()
 }

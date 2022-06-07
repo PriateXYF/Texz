@@ -1,14 +1,14 @@
 <template>
   <div data-wails-no-drag @click="focus">
     <van-field
-    class="text-input"
+      class="text-input"
       ref="input"
       :autofocus="true"
       @blur="focus()"
       @dragenter="dragenter"
       @dragleave="dragleave"
       @drop="drop"
-      :maxlength="2**19"
+      :maxlength="2 ** 19"
       show-word-limit
       v-model="message"
       rows="6"
@@ -56,10 +56,10 @@
   &-field__control {
     color: #ffffff !important;
   }
-  &-field__word-num{
+  &-field__word-num {
     color: #ffffff !important;
   }
-  &-field__word-limit{
+  &-field__word-limit {
     color: rgba(255, 255, 255, 0.7) !important;
   }
 }
@@ -93,6 +93,7 @@
 import { Toast } from "vant";
 import { Copy } from "../../wailsjs/go/main/App";
 export default {
+  props: ["config"],
   data() {
     return {
       isFocus: true,
@@ -139,8 +140,16 @@ export default {
       this.placeholder = "输入文字或拖入文本文件";
       if (e.dataTransfer.files.length != 1)
         return Toast.fail("只能拖入一个文件");
-      var file = e.dataTransfer.files[0];
-      if (file.type.indexOf("text")) return Toast.fail("只能拖入文本文件");
+      const file = e.dataTransfer.files[0];
+      const whiteFileList = ["text", "application/json"];
+      const fileExt = file.name.split(".")[file.name.split(".").length - 1].toLowerCase();
+      if (!whiteFileList.some((white) => file.type.indexOf(white) == 0))
+        if (this.config.whiteFileList){
+          const notInWhiteFileList = !this.config.whiteFileList.some((configWhite) => fileExt === configWhite.toLowerCase())
+          if(notInWhiteFileList) return Toast.fail("只能拖入文本文件")
+        }else{
+          return Toast.fail("只能拖入文本文件")
+        }
       var reader = new FileReader();
       reader.readAsText(file);
       Toast.loading({
@@ -150,7 +159,7 @@ export default {
       });
       reader.onload = function () {
         Toast.clear();
-        if(reader.result.length > 2**19) return Toast.fail("字数过多");
+        if (reader.result.length > 2 ** 19) return Toast.fail("字数过多");
         _this.message = reader.result;
       };
       reader.onerror = function () {

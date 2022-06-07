@@ -1,6 +1,6 @@
 {
   "name": "Texz",
-  "version" : "1.0.0",
+  "version" : "1.0.1",
   "outputfilename": "Texz",
   "frontend:install": "yarn",
   "frontend:build": "yarn build",

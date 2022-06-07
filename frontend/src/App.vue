@@ -14,7 +14,7 @@
       @copyTextInput="copyTextInput"
       @undoTextInput="undoTextInput"
     />
-    <TextInput ref="textInput" @openSearch="openSearch" />
+    <TextInput :config="config" ref="textInput" @openSearch="openSearch" />
   </div>
 </template>
 
@@ -23,12 +23,13 @@ import { Toast } from "vant";
 import ToolBar from "./components/ToolBar.vue";
 import TextInput from "./components/TextInput.vue";
 import Search from "./components/Search.vue";
-import { GetModules, Handling } from "../wailsjs/go/main/App";
+import { GetModules, Handling, GetConfig } from "../wailsjs/go/main/App";
 export default {
   name: "App",
   data() {
     return {
       modules: [],
+      config: {},
     };
   },
   components: {
@@ -67,6 +68,7 @@ export default {
         });
         _this.$refs.textInput.message = result;
         _this.$refs.textInput.now = _this.$refs.textInput.history.length;
+        if (_this.config.autoCopy) _this.copyTextInput();
         Toast.clear();
       });
     },
@@ -79,21 +81,34 @@ export default {
         this.$refs.textInput.copy();
       }
     },
-    undoTextInput(){
+    undoTextInput() {
       if (this.$refs.textInput.isFocus) this.$refs.textInput.undo();
-    }
+    },
   },
-  beforeCreate() {
+  async beforeCreate() {
     Toast.loading({
-      message: "正在加载模块",
+      message: "正在载入配置",
       duration: 0,
       forbidClick: true,
       loadingType: "spinner",
     });
-    GetModules().then((result) => {
-      this.modules = result;
-      Toast.clear();
-    });
+    async function getModlues() {
+      const modules = await GetModules();
+      return modules;
+    }
+    async function getConfig() {
+      const config = await GetConfig();
+      try {
+        JSON.parse(config);
+      } catch (error) {
+        Toast.clear();
+        return Toast.fail("解析配置文件失败，请重启");
+      }
+      return JSON.parse(config);
+    }
+    this.modules = await getModlues();
+    this.config = await getConfig();
+    Toast.clear();
   },
   mounted() {
     var _this = this;

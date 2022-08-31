@@ -1,0 +1,4 @@
+{
+    "autoCopy": true,
+    "whiteFileList": ["java", "go", "vue", "c", "cpp", "sql", "log"]
+}

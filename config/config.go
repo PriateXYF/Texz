@@ -4,7 +4,7 @@ import (
 	_ "embed"
 )
 
-//go:embed config.json
+//go:embed embed/config.json
 var baseConfig string
 
 func GetConfig() string {

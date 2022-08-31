@@ -19,11 +19,12 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import { Toast } from "vant";
 import ToolBar from "./components/ToolBar.vue";
 import TextInput from "./components/TextInput.vue";
 import Search from "./components/Search.vue";
-import { GetModules, Handling, GetConfig } from "../wailsjs/go/main/App";
+import { GetModules, Handling, GetConfig, GetRemoteModlues } from "../wailsjs/go/main/App";
 export default {
   name: "App",
   data() {
@@ -46,11 +47,30 @@ export default {
       this.$refs.textInput.isFocus = true;
       this.$refs.textInput.focus();
     },
+    dealResult(rawText, result, func){
+      const funcName = func.name
+        this.$refs.textInput.history.push({
+          func: funcName,
+          text: rawText,
+        });
+        this.$refs.textInput.history.push({
+          func: funcName,
+          text: result,
+        });
+        this.$refs.textInput.message = result;
+        this.$refs.textInput.now = this.$refs.textInput.history.length;
+        if (this.config.autoCopy) this.copyTextInput()
+    },
     handling(func) {
       const _this = this;
       const rawText = this.$refs.textInput.message;
       if (!rawText) return Toast.fail("文本为空");
       const funcName = func.name;
+      // 如果是客户端模块
+      if (func.func) {
+        const result = func.func(rawText)
+        return this.dealResult(rawText, result, func)
+      }
       Toast.loading({
         message: "正在处理文本...",
         duration: 0,
@@ -58,17 +78,7 @@ export default {
         loadingType: "spinner",
       });
       Handling(funcName, rawText).then((result) => {
-        _this.$refs.textInput.history.push({
-          func: funcName,
-          text: rawText,
-        });
-        _this.$refs.textInput.history.push({
-          func: funcName,
-          text: result,
-        });
-        _this.$refs.textInput.message = result;
-        _this.$refs.textInput.now = _this.$refs.textInput.history.length;
-        if (_this.config.autoCopy) _this.copyTextInput();
+        _this.dealResult(rawText, result, func)
         Toast.clear();
       });
     },
@@ -96,6 +106,19 @@ export default {
       const modules = await GetModules();
       return modules;
     }
+    
+    async function getCostomModules() {
+      const remoteModlues = await GetRemoteModlues();
+      window.CostomModules = {
+          name : "Custom",
+          note : "用户自定义模块",
+          functions : []
+      }
+      for (const index in remoteModlues) {
+        await $.getScript(remoteModlues[index])
+      }
+      console.log(window.CostomModules)
+    }
     async function getConfig() {
       const config = await GetConfig();
       try {
@@ -107,6 +130,8 @@ export default {
       return JSON.parse(config);
     }
     this.modules = await getModlues();
+    await getCostomModules();
+    this.modules.push(window.CostomModules)
     this.config = await getConfig();
     Toast.clear();
   },

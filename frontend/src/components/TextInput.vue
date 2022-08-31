@@ -141,7 +141,8 @@ export default {
       if (e.dataTransfer.files.length != 1)
         return Toast.fail("只能拖入一个文件");
       const file = e.dataTransfer.files[0];
-      const whiteFileList = ["text", "application/json"];
+      console.log(file.type)
+      const whiteFileList = ["text", "application/json", "application/x-yaml", "application/x-javascript", "application/x-sh"];
       const fileExt = file.name.split(".")[file.name.split(".").length - 1].toLowerCase();
       if (!whiteFileList.some((white) => file.type.indexOf(white) == 0))
         if (this.config.whiteFileList){

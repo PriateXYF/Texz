@@ -31,6 +31,9 @@ func (a *App) GetModules() []str.Module {
 
 func (a *App) Handling(funcName string, rawText string) string {
 	f := str.GetFunction(funcName)
+	if f == nil {
+		return "处理失败，模块不存在!"
+	}
 	return f.Call(rawText)
 }
 func (a *App) Copy(text string) error {
@@ -45,4 +48,8 @@ func (a *App) Reload() {
 
 func (a *App) GetConfig() string {
 	return config.GetConfig()
+}
+
+func (a *App) GetRemoteModlues() []string {
+	return config.GetRemoteModlues()
 }

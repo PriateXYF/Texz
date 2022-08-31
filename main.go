@@ -2,6 +2,9 @@ package main
 
 import (
 	"embed"
+	"net/http"
+
+	"texz/config"
 
 	// hook "github.com/robotn/gohook"
 	"github.com/wailsapp/wails/v2"
@@ -27,9 +30,20 @@ func addEmptyMenu(m *menu.Menu, t string, k *keys.Accelerator) {
 	m.AddText(t, k, func(_ *menu.CallbackData) {})
 }
 
+func startModule() {
+	moduleJSPath := config.GetModlueJSPath()
+	fsh := http.FileServer(http.Dir(moduleJSPath))
+	http.Handle("/", http.StripPrefix("/", fsh))
+	err := http.ListenAndServe(":9090", nil) //设置监听的端口
+	if err != nil {
+		print(err)
+	}
+}
+
 func main() {
 	// low()
 	// Create an instance of the app structure
+	go startModule()
 	app := NewApp()
 	AppMenu := menu.NewMenu()
 	// 此处还需要针对MACOS进行判断

@@ -69,6 +69,7 @@ func OutputFile(filepath string, content string) error {
 	return w.Flush()
 }
 
+// 读取文件内容
 func ReadFile(filepath string) (string, error) {
 	file, err := os.Open(filepath)
 	if err != nil {
@@ -89,4 +90,14 @@ func FileExists(path string) bool {
 		return false
 	}
 	return false
+}
+
+// 若文件夹不存在则创建文件夹
+func MakeDir(path string) error {
+	exist := FileExists(path)
+	if exist {
+		return nil
+	}
+	// 若目录不存在则创建
+	return os.Mkdir(path, os.ModePerm)
 }
